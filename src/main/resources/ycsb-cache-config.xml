@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+   xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+   <caching-scheme-mapping>
+      <cache-mapping>
+         <cache-name>YCSB</cache-name>
+         <scheme-name>nearsch</scheme-name>
+      </cache-mapping>
+   </caching-scheme-mapping>
+   
+   <caching-schemes>
+      <distributed-scheme>
+         <scheme-name>distributed</scheme-name>
+         <service-name>DistributedCache</service-name>
+         <backing-map-scheme>
+            <local-scheme/>
+         </backing-map-scheme>
+         <autostart>true</autostart>
+      </distributed-scheme>
+      <near-scheme>
+         <scheme-name>nearsch</scheme-name>
+         <front-scheme>
+            <local-scheme/>
+         </front-scheme>
+         <back-scheme>
+            <distributed-scheme>
+               <scheme-name>near-distributed</scheme-name>
+              <backing-map-scheme>
+                <read-write-backing-map-scheme>
+                  <internal-cache-scheme>
+                    <local-scheme>
+                      <unit-calculator>BINARY</unit-calculator>
+                    </local-scheme>
+                  </internal-cache-scheme>
+                  <cachestore-scheme>
+                    <class-scheme>
+                      <class-name>com.oracle.coherence.jsondb.OracleDocumentStore</class-name>
+                      <init-params>
+                        <init-param>
+                          <param-type>string</param-type>
+                          <param-value>${DB_NAME}</param-value>
+                        </init-param>
+                        <init-param>
+                          <param-type>string</param-type>
+                          <param-value>${DB_TABLE}</param-value>
+                        </init-param>
+                        <init-param>
+                          <param-type>string</param-type>
+                          <param-value>${DB_USER}</param-value>
+                        </init-param>
+                        <init-param>
+                          <param-type>string</param-type>
+                          <param-value>${DB_PASSWORD}</param-value>
+                        </init-param>
+                      </init-params>
+                    </class-scheme>
+                  </cachestore-scheme>
+                </read-write-backing-map-scheme>
+              </backing-map-scheme>
+               <autostart>true</autostart>
+            </distributed-scheme>
+         </back-scheme>
+      </near-scheme>
+   </caching-schemes>
+</cache-config>
+
+
