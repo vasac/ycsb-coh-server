@@ -9,9 +9,11 @@ kind: Coherence
 metadata:
   name: coherence-ycsb-server
 spec:
+  imagePullSecrets:
+    - name: ocir-ycsb-secret
   cluster: ycsb
   replicas: 3
-  image: kobajagi.net/oracle/coherence-ycsb-coh-server:0.0.1-SNAPSHOT
+  image: iad.ocir.io/odx-stateservice/ycsb/server:latest
   env:
     - name: TNS_ADMIN
       value: "/wallet"
@@ -23,18 +25,24 @@ spec:
       value: Coherence123
     - name: DB_TABLE
       value: YCSB
-
 #    - name: TRACING_HOST
 #      value: "jaeger-collector"
 #    - name: JAEGER_SAMPLER_TYPE
 #      value: "const"
 #    - name: JAEGER_SAMPLER_PARAM
 #      value: "1"
+  resources:
+    requests:
+      memory: "8192Mi"
+#      cpu: "250m"
+    limits:
+      memory: "8192Mi"
+#      cpu: "500m"
   application:
     main: com.oracle.coherence.ycsb.server.Main
   jvm:
     memory:
-      heapSize: 512M
+      heapSize: 6G
     args:
       - "-Dtangosol.pof.enabled=true"
       - "-Dcoherence.pof.config=pof-config.xml"
