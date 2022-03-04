@@ -18,7 +18,7 @@ spec:
     - name: TNS_ADMIN
       value: "/wallet"
     - name: DB_NAME
-      value: jsondb1_low
+      value: jsondb1_tp
     - name: DB_USER
       value: TEST
     - name: DB_PASSWORD
@@ -33,21 +33,13 @@ spec:
 #      value: "1"
   resources:
     requests:
-      memory: "8192Mi"
-#      cpu: "250m"
-    limits:
-      memory: "8192Mi"
-#      cpu: "500m"
+      memory: "20Gi"
   application:
-    main: com.oracle.coherence.ycsb.server.Main
+    type: helidon
   jvm:
     memory:
-      heapSize: 6G
-    args:
-      - "-Dtangosol.pof.enabled=true"
-      - "-Dcoherence.pof.config=pof-config.xml"
+      heapSize: 16G
   coherence:
-    cacheConfig: ycsb-cache-config.xml
     metrics:
       enabled: true
   ports:
@@ -61,3 +53,12 @@ spec:
     - name: metrics
       serviceMonitor:
         enabled: true
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: type
+            operator: In
+            values:
+            - server

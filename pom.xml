@@ -28,13 +28,9 @@
 
   <properties>
     <mainClass>io.helidon.microprofile.cdi.Main</mainClass>
-<!--    <container.repo>ghcr.io/oracle/ycsb-coherence</container.repo>-->
     <container.repo>iad.ocir.io/odx-stateservice/ycsb/server</container.repo>
-
-<!--    <container.version>${project.version}</container.version>-->
     <container.version>latest</container.version>
     <jib.goal>dockerBuild</jib.goal>
-<!--    <jib.goal>buildTar</jib.goal>-->
 
     <!-- dependencies -->
     <version.lib.coherence>21.12.2</version.lib.coherence>
@@ -52,13 +48,11 @@
       <artifactId>coherence-json-db</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
-<!--
     <dependency>
       <groupId>com.oracle.coherence.ce</groupId>
       <artifactId>coherence-cdi-server</artifactId>
       <version>${version.lib.coherence}</version>
     </dependency>
--->
     <dependency>
       <groupId>com.oracle.coherence.ce</groupId>
       <artifactId>coherence-mp-config</artifactId>
@@ -88,40 +82,9 @@
           </execution>
         </executions>
       </plugin>
-<!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <systemPropertyVariables>
-            <coherence.metrics.http.enabled>true</coherence.metrics.http.enabled>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
--->
-<!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
--->
     </plugins>
   </build>
+
   <profiles>
     <profile>
       <id>container</id>
@@ -138,8 +101,7 @@
                 </image>
               </from>
               <to>
-<!--                <image>${container.repo}-${project.artifactId}</image>-->
-                <image>iad.ocir.io/odx-stateservice/ycsb/server</image>
+                <image>${container.repo}</image>
                 <tags>
                   <tag>${container.version}</tag>
                 </tags>
@@ -147,7 +109,7 @@
               <extraDirectories>
                 <paths>
                   <path>
-                    <from>/Users/vasac/.jsondb/coherence/jsondb1</from>
+                    <from>${user.home}/.jsondb/coherence/jsondb1</from>
                     <into>/wallet</into>
                   </path>
                 </paths>
